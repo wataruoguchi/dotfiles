@@ -1,0 +1,7 @@
+/*
+!.gitignore
+!.wezterm.lua
+!/.config/
+/.config/*
+!/.config/nvim
+
