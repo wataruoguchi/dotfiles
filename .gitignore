@@ -5,4 +5,5 @@
 /.config/*
 !/.config/nvim
 !/.zshrc
+!/.bashrc
 !/.gitshorthands

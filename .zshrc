@@ -31,11 +31,17 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # ---- Eza (better ls) -----
-alias ls="eza --icons=always"
+if command -v eza &>/dev/null; then
+  alias ls="eza --icons=always"
+fi
 
 # ---- Zoxide (better cd) ----
-eval "$(zoxide init zsh)"
-alias cd="z"
+if command -v zoxide &>/dev/null; then
+  eval "$(zoxide init zsh)"
+  alias cd="z"
+fi
 
 # ---- Neo vim
-alias vi="nvim"
+if command -v nvim &>/dev/null; then
+  alias vi="nvim"
+fi
