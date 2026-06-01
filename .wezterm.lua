@@ -20,8 +20,8 @@ config.window_decorations = "RESIZE"
 config.show_tabs_in_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
 config.window_frame = {
-	inactive_ttilebar_bg = "none",
-	active_ttilebar_bg = "none",
+	inactive_titlebar_bg = "none",
+	active_titlebar_bg = "none",
 }
 config.window_background_gradient = {
 	colors = { "#000000" },
