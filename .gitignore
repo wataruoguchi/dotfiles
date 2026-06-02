@@ -6,4 +6,5 @@
 !/.config/nvim
 !/.zshrc
 !/.bashrc
+!/.p10k.zsh
 !/.gitshorthands
