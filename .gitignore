@@ -1,9 +1,9 @@
 /*
 !.gitignore
-!.wezterm.lua
 !/.config/
 /.config/*
 !/.config/nvim
+!/.config/wezterm
 !/.zshrc
 !/.bashrc
 !/.p10k.zsh
