@@ -13,6 +13,11 @@ config.font_size = 15
 config.window_background_opacity = 0.8
 config.macos_window_background_blur = 10
 
+wezterm.on("gui-startup", function(cmd)
+	local tab, pane, window = wezterm.mux.spawn_window(cmd or {})
+	window:gui_window():toggle_fullscreen()
+end)
+
 -- Tab
 
 config.window_decorations = "RESIZE"
@@ -21,9 +26,6 @@ config.hide_tab_bar_if_only_one_tab = true
 config.window_frame = {
 	inactive_titlebar_bg = "none",
 	active_titlebar_bg = "none",
-}
-config.window_background_gradient = {
-	colors = { "#000000" },
 }
 config.show_new_tab_button_in_tab_bar = false
 -- The below is available only with the nightly version
