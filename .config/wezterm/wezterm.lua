@@ -13,7 +13,7 @@ config.font_size = 15
 config.window_background_opacity = 0.8
 config.macos_window_background_blur = 10
 
-config.native_macos_fullscreen_mode = true -- Alt + Enter to toggle Full Screen.
+config.native_macos_fullscreen_mode = false -- Alt + Enter to toggle Full Screen. False to keep the background transparent.
 -- Tab
 
 config.window_decorations = "RESIZE"
