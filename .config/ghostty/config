@@ -1,0 +1,16 @@
+# Theme (matches WezTerm's "Tokyo Night")
+theme = TokyoNight
+
+# Font (matches WezTerm)
+font-family = MesloLGS Nerd Font Mono
+font-size = 15
+
+# Transparency + blur (matches WezTerm)
+background-opacity = 0.8
+background-blur = 10
+
+# Titlebar
+macos-titlebar-style = transparent
+
+# Tabs
+window-show-tab-bar = auto
