@@ -16,45 +16,49 @@ macos-titlebar-style = transparent
 window-show-tab-bar = auto
 
 # ---------------------------------------------------------------------------
-# tmux-style keybindings (leader = ctrl+a, mirrors .config/wezterm/tmux.lua)
+# tmux-style keybindings (leader = ctrl+b)
+#
+# The leader is ctrl+b, not ctrl+a, so it stays out of the way of Herdr's
+# ctrl+a prefix (.config/herdr/config.toml) when Herdr runs inside Ghostty.
+# .config/wezterm/tmux.lua still uses ctrl+a.
 #
 # Ghostty has no leader-with-timeout; it uses key sequences (`a>b`) that wait
-# indefinitely for the next key. Press ctrl+a twice to send a literal ctrl+a.
+# indefinitely for the next key. Press ctrl+b twice to send a literal ctrl+b.
 # ---------------------------------------------------------------------------
 
-keybind = ctrl+a>ctrl+a=text:\x01
+keybind = ctrl+b>ctrl+b=text:\x02
 
 # Splitting
-# ctrl+a " -> split top/bottom, ctrl+a % -> split left/right.
+# ctrl+b " -> split top/bottom, ctrl+b % -> split left/right.
 # Shifted punctuation is bound by physical key (`shift+quote`) because Ghostty
 # matches the *unshifted* codepoint plus modifiers; the codepoint forms are
 # kept alongside for non-US layouts.
-keybind = ctrl+a>shift+quote=new_split:down
-keybind = ctrl+a>"=new_split:down
-keybind = ctrl+a>shift+digit_5=new_split:right
-keybind = ctrl+a>%=new_split:right
+keybind = ctrl+b>shift+quote=new_split:down
+keybind = ctrl+b>"=new_split:down
+keybind = ctrl+b>shift+digit_5=new_split:right
+keybind = ctrl+b>%=new_split:right
 
 # Navigation (vim keys)
-keybind = ctrl+a>h=goto_split:left
-keybind = ctrl+a>j=goto_split:down
-keybind = ctrl+a>k=goto_split:up
-keybind = ctrl+a>l=goto_split:right
+keybind = ctrl+b>h=goto_split:left
+keybind = ctrl+b>j=goto_split:down
+keybind = ctrl+b>k=goto_split:up
+keybind = ctrl+b>l=goto_split:right
 
 # Navigation (arrow keys)
-keybind = ctrl+a>arrow_left=goto_split:left
-keybind = ctrl+a>arrow_down=goto_split:down
-keybind = ctrl+a>arrow_up=goto_split:up
-keybind = ctrl+a>arrow_right=goto_split:right
+keybind = ctrl+b>arrow_left=goto_split:left
+keybind = ctrl+b>arrow_down=goto_split:down
+keybind = ctrl+b>arrow_up=goto_split:up
+keybind = ctrl+b>arrow_right=goto_split:right
 
 # Cycle splits in creation order
-keybind = ctrl+a>o=goto_split:next
-keybind = ctrl+a>shift+o=goto_split:previous
+keybind = ctrl+b>o=goto_split:next
+keybind = ctrl+b>shift+o=goto_split:previous
 
 # Resize the active split (amount is in pixels, not cells)
-keybind = ctrl+a>shift+h=resize_split:left,20
-keybind = ctrl+a>shift+j=resize_split:down,20
-keybind = ctrl+a>shift+k=resize_split:up,20
-keybind = ctrl+a>shift+l=resize_split:right,20
+keybind = ctrl+b>shift+h=resize_split:left,20
+keybind = ctrl+b>shift+j=resize_split:down,20
+keybind = ctrl+b>shift+k=resize_split:up,20
+keybind = ctrl+b>shift+l=resize_split:right,20
 
 # Repeatable resize without re-pressing the leader (Ghostty defaults, kept
 # explicit so they stay next to the bindings above)
@@ -64,20 +68,20 @@ keybind = super+ctrl+arrow_up=resize_split:up,20
 keybind = super+ctrl+arrow_right=resize_split:right,20
 
 # Layout
-keybind = ctrl+a>equal=equalize_splits
-keybind = ctrl+a>z=toggle_split_zoom
-keybind = ctrl+a>x=close_surface
+keybind = ctrl+b>equal=equalize_splits
+keybind = ctrl+b>z=toggle_split_zoom
+keybind = ctrl+b>x=close_surface
 
 # Tabs (tmux window equivalents)
-keybind = ctrl+a>c=new_tab
-keybind = ctrl+a>n=next_tab
-keybind = ctrl+a>p=previous_tab
+keybind = ctrl+b>c=new_tab
+keybind = ctrl+b>n=next_tab
+keybind = ctrl+b>p=previous_tab
 
 # Scrollback search (tmux prefix + /)
-keybind = ctrl+a>slash=start_search
-keybind = ctrl+a>[=scroll_page_up
-keybind = ctrl+a>]=scroll_page_down
+keybind = ctrl+b>slash=start_search
+keybind = ctrl+b>[=scroll_page_up
+keybind = ctrl+b>]=scroll_page_down
 
 # Reload this config (tmux prefix + r). super+shift+, is Ghostty's default and
 # still works; it's the one to use if a bad edit breaks the leader bindings.
-keybind = ctrl+a>r=reload_config
+keybind = ctrl+b>r=reload_config

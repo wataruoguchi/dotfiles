@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Balance the current Herdr tab's panes, tmux's `select-layout` in spirit.
+
+Herdr has no balance action of its own (its key actions stop at resize_mode),
+so this walks the tab's split tree over the socket API and pins every split to
+a 0.5 ratio. Nested splits are balanced level by level: two panes on one side
+of a split share that side evenly rather than every pane in the tab ending up
+the same size.
+
+Bound to prefix+= in .config/herdr/config.toml.
+"""
+
+import json
+import os
+import socket
+import sys
+
+SOCKET_PATH = os.environ.get(
+    "HERDR_SOCKET_PATH", os.path.expanduser("~/.config/herdr/herdr.sock")
+)
+
+
+def call(method, params=None):
+    """Send one request to the Herdr socket and return its result payload.
+
+    `params` is always sent: the server rejects requests that omit it, even for
+    methods whose parameters are all optional.
+    """
+    request = {"id": "balance-panes:" + method, "method": method, "params": params or {}}
+
+    with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+        sock.connect(SOCKET_PATH)
+        sock.sendall((json.dumps(request) + "\n").encode())
+        buf = b""
+        while b"\n" not in buf:
+            chunk = sock.recv(65536)
+            if not chunk:
+                break
+            buf += chunk
+
+    if not buf:
+        raise RuntimeError("no response from %s" % SOCKET_PATH)
+    response = json.loads(buf.split(b"\n", 1)[0].decode())
+    if "error" in response:
+        raise RuntimeError("%s failed: %s" % (method, response["error"]))
+    return response["result"]
+
+
+def split_paths(node, path=()):
+    """Yield the boolean path (False = first child, True = second) of each split."""
+    if node.get("type") != "split":
+        return
+    yield list(path)
+    yield from split_paths(node["first"], path + (False,))
+    yield from split_paths(node["second"], path + (True,))
+
+
+def main():
+    root = call("layout.export")["layout"]["root"]
+    for path in split_paths(root):
+        call("layout.set_split_ratio", {"path": path, "ratio": 0.5})
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main())
+    except Exception as err:  # runs detached, so make the reason findable
+        print("herdr-balance-panes: %s" % err, file=sys.stderr)
+        sys.exit(1)

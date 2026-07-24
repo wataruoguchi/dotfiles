@@ -1,0 +1,67 @@
+[keys]
+# tmux-style prefix (like .config/ghostty/config and .config/wezterm/tmux.lua)
+prefix = "ctrl+a"
+
+# ---------------------------------------------------------------------------
+# Splits — tmux naming, not Herdr's: tmux's prefix+" stacks panes top/bottom
+# (Herdr calls that split_horizontal) and prefix+% puts them side by side
+# (split_vertical). Herdr's own defaults, prefix+minus / prefix+v, are
+# replaced by these.
+# ---------------------------------------------------------------------------
+split_horizontal = 'prefix+"'
+split_vertical = "prefix+%"
+
+# ---------------------------------------------------------------------------
+# Pane focus (vim keys). Same as Herdr's defaults, kept explicit so the whole
+# tmux mapping is readable in one place.
+# ---------------------------------------------------------------------------
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+
+# tmux (and .config/ghostty/config) use prefix+r to reload, so reload_config
+# takes it and Herdr's resize mode moves to prefix+shift+r. Resize mode is
+# repeatable resizing without re-pressing the prefix.
+reload_config = "prefix+r"
+resize_mode = "prefix+shift+r"
+
+# ---------------------------------------------------------------------------
+# Resize, tmux style: prefix + shift + vim key nudges the divider 5% per press.
+# Herdr has no direct resize actions — only resize_mode — so these shell out to
+# the socket API, which acts on whichever pane the server has focused.
+# ---------------------------------------------------------------------------
+[[keys.command]]
+key = "prefix+shift+h"
+type = "shell"
+command = "herdr pane resize --current --direction left"
+description = "resize pane left"
+
+[[keys.command]]
+key = "prefix+shift+j"
+type = "shell"
+command = "herdr pane resize --current --direction down"
+description = "resize pane down"
+
+[[keys.command]]
+key = "prefix+shift+k"
+type = "shell"
+command = "herdr pane resize --current --direction up"
+description = "resize pane up"
+
+[[keys.command]]
+key = "prefix+shift+l"
+type = "shell"
+command = "herdr pane resize --current --direction right"
+description = "resize pane right"
+
+# tmux's prefix+= (balance panes). Herdr has no balance action either, so this
+# runs bin/herdr-balance-panes, symlinked into ~/.local/bin.
+[[keys.command]]
+key = "prefix+="
+type = "shell"
+command = "herdr-balance-panes"
+description = "balance panes"
+
+[ui]
+agent_panel_sort = "spaces"
