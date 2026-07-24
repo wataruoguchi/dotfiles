@@ -2,8 +2,8 @@
 theme = TokyoNight
 
 # Font (matches WezTerm)
-# font-family = MesloLGS Nerd Font Mono
-font-size = 16
+font-family = MesloLGS Nerd Font Mono
+font-size = 15
 
 # Transparency + blur (matches WezTerm)
 background-opacity = 0.8
