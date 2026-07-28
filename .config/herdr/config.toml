@@ -1,3 +1,4 @@
+onboarding = false
 [keys]
 # tmux-style prefix (like .config/ghostty/config and .config/wezterm/tmux.lua)
 prefix = "ctrl+a"
