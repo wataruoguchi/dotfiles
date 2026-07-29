@@ -3,7 +3,9 @@
 
 [hosts.wwf]
 kind = "docker"
-# Resolve by label, not container name: it survives `dcr` rebuilds.
+# Matched against the container's devcontainer.local_folder label rather than
+# its name — the label survives `dcr` rebuilds, the generated name does not.
+# The alternative key is `container`, which resolves by name and would break.
 folder = "/Users/wataru/dev/where-we-fly"
 # Required — this machine has no `docker` CLI, only podman. Every command the
 # plugin runs (ps -q --filter, exec, exec -i … socat) is podman-compatible.
