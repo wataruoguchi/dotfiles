@@ -2,7 +2,8 @@
 # Symlink this repo's config directories into $HOME.
 #
 # Every directory under .config/ here becomes ~/.config/<name> -> repo, except
-# the ones listed in FILE_LINK_ONLY below (see why there).
+# the ones listed in FILE_LINK_ONLY below (see why there). Executables listed in
+# BIN_LINK are additionally linked into ~/.local/bin so they land on PATH.
 #
 #   ./install.sh              create/repair links, warn about anything in the way
 #   ./install.sh --dry-run    print the plan, change nothing
@@ -18,6 +19,7 @@ set -euo pipefail
 DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 CONFIG_SRC="${DOTFILES}/.config"
 CONFIG_DST="${HOME}/.config"
+BIN_DST="${HOME}/.local/bin"
 
 DRY_RUN=0
 
@@ -32,6 +34,19 @@ DRY_RUN=0
 FILE_LINK_ONLY="
 herdr config.toml
 herdr-mirror hosts.toml
+"
+
+# Executables that have to be reachable on PATH, not just present in the config
+# directory. herdr's config.toml binds prefix+= to the bare command name
+# `herdr-balance-panes`, which herdr resolves through PATH — the copy under
+# .config/herdr/bin/ alone leaves that keybinding dead.
+#
+# These need ~/.local/bin on PATH; .zshrc does that, and .zshrc is deliberately
+# out of scope for this script (see the closing note).
+#
+# Format, one path per line, relative to .config/.
+BIN_LINK="
+herdr/bin/herdr-balance-panes
 "
 
 n_ok=0; n_linked=0; n_repointed=0; n_warned=0
@@ -160,6 +175,25 @@ for src in "${CONFIG_SRC}"/*/; do
   fi
 done
 
+for rel in ${BIN_LINK}; do
+  bin_src="${CONFIG_SRC}/${rel}"
+  bin_name="$(basename "${rel}")"
+
+  if [ ! -e "${bin_src}" ]; then
+    say "  missing   .local/bin/${bin_name}  (not in the repo — skipped)"
+    continue
+  fi
+
+  # A link to a non-executable file resolves fine and then fails to run, which
+  # surfaces as a keybinding that silently does nothing. Say so up front.
+  if [ ! -x "${bin_src}" ]; then
+    say "  WARNING   .config/${rel} is not executable — chmod +x it or the link will not run"
+    n_warned=$((n_warned + 1))
+  fi
+
+  link_one "${bin_src}" "${BIN_DST}/${bin_name}" ".local/bin/${bin_name}"
+done
+
 say ""
 say "linked ${n_linked}, repointed ${n_repointed}, already correct ${n_ok}, warnings ${n_warned}"
 
@@ -172,6 +206,7 @@ fi
 
 say ""
 say "Note: top-level dotfiles (.zshrc, .p10k.zsh, .gitshorthands, .bashrc) are"
-say "deliberately NOT handled here — this script links directories under .config/."
-say "The \$HOME copies of .zshrc and .gitshorthands currently differ from the repo,"
-say "so linking them is a merge, not an install."
+say "deliberately NOT handled here — this script links things under .config/, plus"
+say "the executables it puts in ~/.local/bin. The \$HOME copies of .zshrc and"
+say ".gitshorthands currently differ from the repo, so linking them is a merge,"
+say "not an install. Note that .zshrc is what puts ~/.local/bin on PATH."
