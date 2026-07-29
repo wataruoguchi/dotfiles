@@ -1,0 +1,13 @@
+# herdr-mirror — mirror the where-we-fly devcontainer's herdr server into the
+# local sidebar. See scripts/setup-herdr-remote.md in that repo.
+
+[hosts.wwf]
+kind = "docker"
+# Matched against the container's devcontainer.local_folder label rather than
+# its name — the label survives `dcr` rebuilds, the generated name does not.
+# The alternative key is `container`, which resolves by name and would break.
+folder = "/Users/wataru/dev/where-we-fly"
+# Required — this machine has no `docker` CLI, only podman. Every command the
+# plugin runs (ps -q --filter, exec, exec -i … socat) is podman-compatible.
+docker_bin = "/opt/podman/bin/podman"
+prefix = "wwf"

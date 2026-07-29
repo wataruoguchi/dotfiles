@@ -66,3 +66,6 @@ description = "balance panes"
 
 [ui]
 agent_panel_sort = "spaces"
+
+[update]
+channel = "preview"
